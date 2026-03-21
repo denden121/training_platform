@@ -9,4 +9,5 @@ RUN uv pip install --system -e ".[dev]"
 
 COPY . .
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+RUN chmod +x entrypoint.sh
+CMD ["./entrypoint.sh"]

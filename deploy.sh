@@ -1,0 +1,28 @@
+#!/bin/bash
+set -e
+
+echo "==> Checking .env..."
+if [ ! -f .env ]; then
+  cp .env.example .env
+  echo "    Created .env from .env.example"
+  echo "    !! Edit .env and set SECRET_KEY, ENCRYPTION_KEY, POSTGRES_PASSWORD !!"
+  exit 1
+fi
+
+echo "==> Removing platform-specific lock files..."
+rm -f frontend/package-lock.json
+
+echo "==> Stopping old containers..."
+docker compose down --remove-orphans
+
+echo "==> Building and starting containers..."
+docker compose up --build -d
+
+echo "==> Waiting for services to be healthy..."
+sleep 5
+
+echo "==> Done!"
+echo ""
+echo "    Backend:  http://$(curl -s ifconfig.me):8000/health"
+echo "    Frontend: http://$(curl -s ifconfig.me)"
+echo "    API docs: http://$(curl -s ifconfig.me):8000/docs"
