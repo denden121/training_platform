@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main, master]
+    branches: [main, master, feature/first_stage]
   pull_request:
-    branches: [main, master]
+    branches: [main, master, feature/first_stage]
 
 jobs:
   backend-lint:
@@ -63,7 +63,7 @@ jobs:
     name: Deploy to VPS
     needs: [backend-lint, backend-test, frontend-lint]
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: github.event_name == 'push'
     steps:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1
