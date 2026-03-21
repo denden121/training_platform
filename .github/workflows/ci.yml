@@ -58,3 +58,20 @@ jobs:
       - run: npm run lint
       - run: npm run format:check
       - run: npx tsc --noEmit
+
+  deploy:
+    name: Deploy to VPS
+    needs: [backend-lint, backend-test, frontend-lint]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            cd /opt/training_platform
+            git pull origin main
+            bash deploy.sh
