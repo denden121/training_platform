@@ -39,6 +39,7 @@ async def client(db: AsyncSession) -> AsyncClient:
 
 # --- Reusable helpers ---
 
+
 async def register(client: AsyncClient, email: str = "user@example.com", password: str = "password123") -> dict:
     r = await client.post("/auth/register", json={"email": email, "password": password})
     assert r.status_code == 201, r.text

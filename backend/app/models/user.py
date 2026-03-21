@@ -9,7 +9,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.base import Base
 
 
-class UserRole(str, enum.Enum):
+class UserRole(enum.StrEnum):
     athlete = "athlete"
     coach = "coach"
     admin = "admin"
@@ -24,22 +24,20 @@ class User(Base):
     role: Mapped[UserRole] = mapped_column(Enum(UserRole), default=UserRole.athlete, nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     is_verified: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now(), nullable=False
-    )
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     last_login_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
     profile: Mapped["Profile"] = relationship("Profile", back_populates="user", uselist=False)
 
 
-class TrainingLevel(str, enum.Enum):
+class TrainingLevel(enum.StrEnum):
     beginner = "beginner"
     amateur = "amateur"
     advanced = "advanced"
     elite = "elite"
 
 
-class Gender(str, enum.Enum):
+class Gender(enum.StrEnum):
     male = "male"
     female = "female"
     other = "other"
