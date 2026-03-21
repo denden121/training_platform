@@ -15,7 +15,7 @@ class ProfileResponse(BaseModel):
     gender: Gender | None
     weight_kg: float | None
     height_cm: int | None
-    timezone: str
+    timezone: str | None
     ftp_watts: int | None
     threshold_pace_sec_per_km: int | None
     vo2max: float | None

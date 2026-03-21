@@ -60,7 +60,7 @@ class Profile(Base):
 
     weight_kg: Mapped[float | None] = mapped_column(nullable=True)
     height_cm: Mapped[int | None] = mapped_column(nullable=True)
-    timezone: Mapped[str] = mapped_column(String(50), default="UTC", nullable=False)
+    timezone: Mapped[str | None] = mapped_column(String(50), nullable=True)
 
     # Fitness metrics
     ftp_watts: Mapped[int | None] = mapped_column(nullable=True)
