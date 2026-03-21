@@ -1,0 +1,48 @@
+[project]
+name = "training-platform-backend"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+    "sqlalchemy>=2.0",
+    "alembic>=1.14",
+    "asyncpg>=0.30",
+    "pydantic>=2.10",
+    "pydantic-settings>=2.7",
+    "python-jose[cryptography]>=3.3",
+    "bcrypt>=4.0",
+    "celery>=5.4",
+    "redis>=5.2",
+    "cryptography>=44",
+    "httpx>=0.28",
+    "email-validator>=2.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "pytest-asyncio>=0.25",
+    "anyio>=4",
+    "pytest-cov>=6",
+    "httpx>=0.28",
+    "aiosqlite>=0.20",
+    "ruff>=0.9",
+    "email-validator>=2.2",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = ["B008"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["app"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]

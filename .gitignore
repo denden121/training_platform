@@ -1,0 +1,26 @@
+# Env
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+dist/
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node
+node_modules/
+dist/
+.eslintcache
+
+# Docker
+postgres_data/
+
+# IDE
+.idea/
+.vscode/
+*.swp
