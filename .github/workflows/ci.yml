@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main, master, feature/first_stage]
+    branches: [main]
   pull_request:
-    branches: [main, master, feature/first_stage]
+    branches: [main]
 
 jobs:
   backend-lint:
@@ -74,7 +74,7 @@ jobs:
     needs: [backend-lint, backend-test, frontend-lint]
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/first_stage')
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1
