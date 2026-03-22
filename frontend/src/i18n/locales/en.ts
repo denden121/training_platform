@@ -23,6 +23,10 @@ export default {
     feature_1: "Training diary and analytics",
     feature_2: "Race calendar and results",
     feature_3: "Personal records and achievements",
+    hero_login_title: "Train.\nAnalyze.\nConquer.",
+    hero_login_subtitle: "Smart tracking for runners, cyclists, swimmers and OCR athletes",
+    hero_register_title: "Start\nyour journey",
+    hero_register_subtitle: "Join the community of cyclic sports and OCR athletes",
   },
   profile: {
     title: "Athlete Profile",

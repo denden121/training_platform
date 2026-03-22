@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, Mail } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -139,14 +139,17 @@ export default function LoginPage() {
                 className="mb-6 text-[3.25rem] leading-[1.15] font-bold"
                 style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}
               >
-                Тренируйся.
-                <br />
-                Анализируй.
-                <br />
-                Побеждай.
+                {t("auth.hero_login_title")
+                  .split("\n")
+                  .map((line, i, arr) => (
+                    <span key={i}>
+                      {line}
+                      {i < arr.length - 1 && <br />}
+                    </span>
+                  ))}
               </h1>
               <p className="mb-10 max-w-xs text-sm leading-relaxed" style={{ color: TEXT_MUTED }}>
-                Умный трекинг для бегунов, велосипедистов, пловцов и OCR-атлетов
+                {t("auth.hero_login_subtitle")}
               </p>
             </>
           ) : (
@@ -155,12 +158,17 @@ export default function LoginPage() {
                 className="mb-6 text-[3.75rem] leading-[1.1] font-bold"
                 style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}
               >
-                Начни
-                <br />
-                свой путь
+                {t("auth.hero_register_title")
+                  .split("\n")
+                  .map((line, i, arr) => (
+                    <span key={i}>
+                      {line}
+                      {i < arr.length - 1 && <br />}
+                    </span>
+                  ))}
               </h1>
               <p className="mb-10 max-w-xs text-sm leading-relaxed" style={{ color: TEXT_MUTED }}>
-                Присоединяйся к сообществу атлетов циклических видов спорта и OCR
+                {t("auth.hero_register_subtitle")}
               </p>
             </>
           )}
@@ -178,21 +186,40 @@ export default function LoginPage() {
 
       {/* ── Right panel ── */}
       <div className="flex min-w-0 flex-1 flex-col">
-        {/* Top bar */}
-        <div className="flex justify-end px-8 py-6">
+        {/* Mobile header: logo + lang switcher */}
+        <div className="flex items-center px-6 pt-6 pb-3 lg:hidden">
+          {mode === "login" && (
+            <div className="mr-4 h-px flex-1" style={{ backgroundColor: GOLD, opacity: 0.5 }} />
+          )}
+          <div className="flex items-center gap-2">
+            <PulseIcon />
+            <span
+              className="text-sm font-semibold tracking-[0.22em] uppercase"
+              style={{ color: GOLD }}
+            >
+              АТЛЕТ
+            </span>
+          </div>
+          <div className="ml-auto pl-5">
+            <LangSwitcher />
+          </div>
+        </div>
+
+        {/* Desktop header: lang switcher only (logo is in left panel) */}
+        <div className="hidden justify-end px-8 py-6 lg:flex">
           <LangSwitcher />
         </div>
 
-        {/* Form */}
-        <div className="flex flex-1 items-center justify-center px-8 pb-12">
-          <div className="w-full max-w-[420px]">
+        {/* Form area */}
+        <div className="flex flex-1 items-start px-6 pt-5 pb-4 lg:items-center lg:justify-center lg:px-8 lg:pt-0 lg:pb-12">
+          <div className="w-full lg:max-w-[420px]">
             <h2
-              className="mb-2 text-[2rem] font-bold"
+              className="mb-1.5 text-[2rem] font-bold lg:mb-2"
               style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}
             >
               {mode === "login" ? t("auth.login") : t("auth.register")}
             </h2>
-            <p className="mb-8 text-sm" style={{ color: TEXT_MUTED }}>
+            <p className="mb-6 text-sm lg:mb-8" style={{ color: TEXT_MUTED }}>
               {mode === "login" ? t("auth.subtitle_login") : t("auth.subtitle_register")}
             </p>
 
@@ -232,15 +259,7 @@ export default function LoginPage() {
                   >
                     {t("auth.password")}
                   </label>
-                  {mode === "login" && (
-                    <button
-                      type="button"
-                      className="text-xs transition-opacity hover:opacity-70"
-                      style={{ color: GOLD }}
-                    >
-                      {t("auth.forgot_password")}
-                    </button>
-                  )}
+                  {/* TODO: forgot password — implement password reset via email (Stage 6) */}
                 </div>
                 <div className="relative">
                   <input
@@ -289,65 +308,39 @@ export default function LoginPage() {
               </button>
             </form>
 
-            {/* Divider + Google (login only) */}
-            {mode === "login" && (
-              <>
-                <div className="my-6 flex items-center gap-4">
-                  <div className="h-px flex-1" style={{ backgroundColor: BORDER }} />
-                  <span className="text-xs" style={{ color: TEXT_MUTED }}>
-                    {t("auth.or")}
-                  </span>
-                  <div className="h-px flex-1" style={{ backgroundColor: BORDER }} />
-                </div>
-                <button
-                  type="button"
-                  className="flex w-full items-center justify-center gap-3 rounded py-3.5 text-sm transition-colors"
-                  style={{
-                    border: `1px solid ${BORDER}`,
-                    color: "#ccc",
-                    backgroundColor: "transparent",
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.borderColor = BORDER_HOVER)}
-                  onMouseLeave={(e) => (e.currentTarget.style.borderColor = BORDER)}
-                >
-                  <Mail size={15} />
-                  {t("auth.continue_google")}
-                </button>
-              </>
-            )}
-
-            {/* Switch mode */}
-            <p className="mt-7 text-center text-sm" style={{ color: TEXT_MUTED }}>
-              {mode === "login" ? (
-                <>
-                  {t("auth.no_account")}{" "}
-                  <button
-                    onClick={() => setMode("register")}
-                    className="font-semibold transition-opacity hover:opacity-80"
-                    style={{ color: GOLD }}
-                  >
-                    {t("auth.register")}
-                  </button>
-                </>
-              ) : (
-                <>
-                  {t("auth.has_account")}{" "}
-                  <button
-                    onClick={() => setMode("login")}
-                    className="font-semibold transition-opacity hover:opacity-80"
-                    style={{ color: GOLD }}
-                  >
-                    {t("auth.login")}
-                  </button>
-                </>
-              )}
-            </p>
+            {/* TODO: Google OAuth — implement OAuth 2.0 flow via Google (Stage 2)
+                Show divider + "Continue with Google" button when ready */}
           </div>
         </div>
 
-        {/* Footer */}
-        <div className="px-8 pb-7 text-center">
-          <p className="mx-auto max-w-sm text-xs leading-relaxed" style={{ color: TEXT_DIM }}>
+        {/* Switch mode + footer — pinned to bottom */}
+        <div className="px-6 pb-8 text-center lg:px-8 lg:pb-7">
+          <p className="text-sm" style={{ color: TEXT_MUTED }}>
+            {mode === "login" ? (
+              <>
+                {t("auth.no_account")}{" "}
+                <button
+                  onClick={() => setMode("register")}
+                  className="font-semibold transition-opacity hover:opacity-80"
+                  style={{ color: GOLD }}
+                >
+                  {t("auth.register")}
+                </button>
+              </>
+            ) : (
+              <>
+                {t("auth.has_account")}{" "}
+                <button
+                  onClick={() => setMode("login")}
+                  className="font-semibold transition-opacity hover:opacity-80"
+                  style={{ color: GOLD }}
+                >
+                  {t("auth.login")}
+                </button>
+              </>
+            )}
+          </p>
+          <p className="mx-auto mt-3 max-w-xs text-xs leading-relaxed" style={{ color: TEXT_DIM }}>
             {t("auth.terms")}
           </p>
         </div>
