@@ -65,7 +65,7 @@ function UnitToggle({
 function InfoTooltip({ content }: { content: React.ReactNode }) {
   return (
     <Tooltip.Provider>
-      <Tooltip.Root openDelay={300}>
+      <Tooltip.Root>
         <Tooltip.Trigger className="border-muted-foreground/40 text-muted-foreground flex h-4 w-4 cursor-pointer items-center justify-center rounded-full border text-[10px] leading-none">
           ?
         </Tooltip.Trigger>
