@@ -64,15 +64,8 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-1">
               <Label htmlFor="email">{t("auth.email")}</Label>
-              <Input
-                id="email"
-                type="email"
-                autoComplete="email"
-                {...field("email")}
-              />
-              {errors.email && (
-                <p className="text-xs text-destructive">{errors.email.message}</p>
-              )}
+              <Input id="email" type="email" autoComplete="email" {...field("email")} />
+              {errors.email && <p className="text-destructive text-xs">{errors.email.message}</p>}
             </div>
 
             <div className="space-y-1">
@@ -84,11 +77,11 @@ export default function LoginPage() {
                 {...field("password")}
               />
               {errors.password && (
-                <p className="text-xs text-destructive">{errors.password.message}</p>
+                <p className="text-destructive text-xs">{errors.password.message}</p>
               )}
             </div>
 
-            {serverError && <p className="text-sm text-destructive">{serverError}</p>}
+            {serverError && <p className="text-destructive text-sm">{serverError}</p>}
 
             <Button type="submit" disabled={isSubmitting} className="w-full">
               {isSubmitting
@@ -99,7 +92,7 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          <p className="mt-4 text-center text-sm text-muted-foreground">
+          <p className="text-muted-foreground mt-4 text-center text-sm">
             {mode === "login" ? (
               <>
                 {t("auth.no_account")}{" "}

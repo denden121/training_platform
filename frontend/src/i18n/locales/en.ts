@@ -82,11 +82,17 @@ export default {
     error_hours_max: "Max 40 hours",
 
     hint_weekly_hours: "Total training hours per week. Used by the AI agent to plan training load.",
-    hint_ftp: "Functional Threshold Power — the power you can sustain for ~60 min. Determined by a 20-min test: average power × 0.95.",
-    hint_vo2max: "Maximum oxygen uptake (ml/kg/min). A key indicator of aerobic capacity. Automatically estimated by Garmin and Polar.",
-    hint_lthr: "Heart rate at lactate threshold — the boundary between aerobic and anaerobic zones. Determined by a 30-min test: average HR of the last 20 min.",
-    hint_hr_max: "Maximum heart rate recorded during training or racing. The 220 − age formula gives only a rough estimate.",
-    hint_hr_resting: "Measure in the morning before getting out of bed. An increase of 5+ bpm is a signal of poor recovery.",
-    hint_threshold_pace: "Running pace at lactate threshold in sec/km. Roughly corresponds to your 10 km – half marathon race pace.",
+    hint_ftp:
+      "Functional Threshold Power — the power you can sustain for ~60 min. Determined by a 20-min test: average power × 0.95.",
+    hint_vo2max:
+      "Maximum oxygen uptake (ml/kg/min). A key indicator of aerobic capacity. Automatically estimated by Garmin and Polar.",
+    hint_lthr:
+      "Heart rate at lactate threshold — the boundary between aerobic and anaerobic zones. Determined by a 30-min test: average HR of the last 20 min.",
+    hint_hr_max:
+      "Maximum heart rate recorded during training or racing. The 220 − age formula gives only a rough estimate.",
+    hint_hr_resting:
+      "Measure in the morning before getting out of bed. An increase of 5+ bpm is a signal of poor recovery.",
+    hint_threshold_pace:
+      "Running pace at lactate threshold in sec/km. Roughly corresponds to your 10 km – half marathon race pace.",
   },
 } as const;

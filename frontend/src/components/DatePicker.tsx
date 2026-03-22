@@ -33,12 +33,16 @@ export default function DatePicker({ value, onChange, placeholder = "—" }: Dat
         }
       >
         <CalendarIcon className="mr-2 h-4 w-4 opacity-50" />
-        {validSelected ? format(validSelected, "dd.MM.yyyy") : <span className="text-muted-foreground">{placeholder}</span>}
+        {validSelected ? (
+          format(validSelected, "dd.MM.yyyy")
+        ) : (
+          <span className="text-muted-foreground">{placeholder}</span>
+        )}
       </Popover.Trigger>
 
       <Popover.Portal>
         <Popover.Positioner sideOffset={8}>
-          <Popover.Popup className="z-50 rounded-md border bg-popover shadow-md">
+          <Popover.Popup className="bg-popover z-50 rounded-md border shadow-md">
             <DayPicker
               mode="single"
               selected={validSelected}

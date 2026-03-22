@@ -22,21 +22,42 @@ import {
 import { useProfile, useUpdateProfile } from "@/hooks/useProfile";
 import { clearTokens } from "@/lib/auth";
 
-
 function FieldError({ message }: { message?: string }) {
   if (!message) return null;
-  return <p className="text-xs text-destructive">{message}</p>;
+  return <p className="text-destructive text-xs">{message}</p>;
 }
 
 function Req() {
-  return <span className="ml-0.5 text-destructive">*</span>;
+  return <span className="text-destructive ml-0.5">*</span>;
 }
 
-function UnitToggle({ left, right, active, onToggle }: { left: string; right: string; active: boolean; onToggle: (imperial: boolean) => void }) {
+function UnitToggle({
+  left,
+  right,
+  active,
+  onToggle,
+}: {
+  left: string;
+  right: string;
+  active: boolean;
+  onToggle: (imperial: boolean) => void;
+}) {
   return (
     <div className="flex rounded-md border text-xs">
-      <button type="button" onClick={() => onToggle(false)} className={`px-2 py-0.5 rounded-l-md transition-colors ${!active ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted"}`}>{left}</button>
-      <button type="button" onClick={() => onToggle(true)} className={`px-2 py-0.5 rounded-r-md transition-colors ${active ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted"}`}>{right}</button>
+      <button
+        type="button"
+        onClick={() => onToggle(false)}
+        className={`rounded-l-md px-2 py-0.5 transition-colors ${!active ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted"}`}
+      >
+        {left}
+      </button>
+      <button
+        type="button"
+        onClick={() => onToggle(true)}
+        className={`rounded-r-md px-2 py-0.5 transition-colors ${active ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted"}`}
+      >
+        {right}
+      </button>
     </div>
   );
 }
@@ -45,12 +66,12 @@ function InfoTooltip({ content }: { content: React.ReactNode }) {
   return (
     <Tooltip.Provider>
       <Tooltip.Root delay={300}>
-        <Tooltip.Trigger className="flex h-4 w-4 cursor-pointer items-center justify-center rounded-full border border-muted-foreground/40 text-[10px] leading-none text-muted-foreground">
+        <Tooltip.Trigger className="border-muted-foreground/40 text-muted-foreground flex h-4 w-4 cursor-pointer items-center justify-center rounded-full border text-[10px] leading-none">
           ?
         </Tooltip.Trigger>
         <Tooltip.Portal>
           <Tooltip.Positioner sideOffset={6}>
-            <Tooltip.Popup className="z-50 max-w-72 rounded-md border bg-popover p-3 text-xs text-popover-foreground shadow-md">
+            <Tooltip.Popup className="bg-popover text-popover-foreground z-50 max-w-72 rounded-md border p-3 text-xs shadow-md">
               {content}
             </Tooltip.Popup>
           </Tooltip.Positioner>
@@ -69,12 +90,13 @@ export default function ProfilePage() {
     return Object.fromEntries(
       Object.keys(allTimezones).map((tz) => {
         try {
-          const name = new Intl.DateTimeFormat(locale, {
-            timeZone: tz,
-            timeZoneName: "long",
-          })
-            .formatToParts(new Date())
-            .find((p) => p.type === "timeZoneName")?.value ?? tz;
+          const name =
+            new Intl.DateTimeFormat(locale, {
+              timeZone: tz,
+              timeZoneName: "long",
+            })
+              .formatToParts(new Date())
+              .find((p) => p.type === "timeZoneName")?.value ?? tz;
           return [tz, name];
         } catch {
           return [tz, tz];
@@ -104,7 +126,7 @@ export default function ProfilePage() {
   }
   function ftInToCm(ft: string | number, inch: string | number) {
     if (ft === "" && inch === "") return "";
-    return Math.round(((Number(ft) * 12 + Number(inch)) / CM_TO_IN));
+    return Math.round((Number(ft) * 12 + Number(inch)) / CM_TO_IN);
   }
 
   const [ftIn, setFtIn] = useState({ ft: "", in: "" });
@@ -118,16 +140,62 @@ export default function ProfilePage() {
     birth_date: z.string().optional(),
     gender: z.enum(["male", "female", "other"]).optional(),
     weight_kg: z.coerce.number().positive(t("profile.error_weight")).optional().or(z.literal("")),
-    height_cm: z.coerce.number().int().min(50, t("profile.error_height_min")).max(250, t("profile.error_height_max")).optional().or(z.literal("")),
+    height_cm: z.coerce
+      .number()
+      .int()
+      .min(50, t("profile.error_height_min"))
+      .max(250, t("profile.error_height_max"))
+      .optional()
+      .or(z.literal("")),
     timezone: z.string().optional(),
-    ftp_watts: z.coerce.number().int().min(50, t("profile.error_ftp_min")).max(600, t("profile.error_ftp_max")).optional().or(z.literal("")),
-    threshold_pace_sec_per_km: z.coerce.number().int().min(120, t("profile.error_pace_min")).max(900, t("profile.error_pace_max")).optional().or(z.literal("")),
-    vo2max: z.coerce.number().min(20, t("profile.error_vo2max_min")).max(100, t("profile.error_vo2max_max")).optional().or(z.literal("")),
-    lthr: z.coerce.number().int().min(80, t("profile.error_hr_min")).max(220, t("profile.error_hr_max_val")).optional().or(z.literal("")),
-    hr_max: z.coerce.number().int().min(100, t("profile.error_hrmax_min")).max(230, t("profile.error_hrmax_max")).optional().or(z.literal("")),
-    hr_resting: z.coerce.number().int().min(30, t("profile.error_hrrest_min")).max(100, t("profile.error_hrrest_max")).optional().or(z.literal("")),
-    training_level: z.enum(["beginner", "amateur", "advanced", "elite"], { required_error: t("profile.error_required") }),
-    weekly_hours_available: z.coerce.number({ invalid_type_error: t("profile.error_required") }).min(1, t("profile.error_hours_min")).max(40, t("profile.error_hours_max")),
+    ftp_watts: z.coerce
+      .number()
+      .int()
+      .min(50, t("profile.error_ftp_min"))
+      .max(600, t("profile.error_ftp_max"))
+      .optional()
+      .or(z.literal("")),
+    threshold_pace_sec_per_km: z.coerce
+      .number()
+      .int()
+      .min(120, t("profile.error_pace_min"))
+      .max(900, t("profile.error_pace_max"))
+      .optional()
+      .or(z.literal("")),
+    vo2max: z.coerce
+      .number()
+      .min(20, t("profile.error_vo2max_min"))
+      .max(100, t("profile.error_vo2max_max"))
+      .optional()
+      .or(z.literal("")),
+    lthr: z.coerce
+      .number()
+      .int()
+      .min(80, t("profile.error_hr_min"))
+      .max(220, t("profile.error_hr_max_val"))
+      .optional()
+      .or(z.literal("")),
+    hr_max: z.coerce
+      .number()
+      .int()
+      .min(100, t("profile.error_hrmax_min"))
+      .max(230, t("profile.error_hrmax_max"))
+      .optional()
+      .or(z.literal("")),
+    hr_resting: z.coerce
+      .number()
+      .int()
+      .min(30, t("profile.error_hrrest_min"))
+      .max(100, t("profile.error_hrrest_max"))
+      .optional()
+      .or(z.literal("")),
+    training_level: z.enum(["beginner", "amateur", "advanced", "elite"], {
+      required_error: t("profile.error_required"),
+    }),
+    weekly_hours_available: z.coerce
+      .number({ invalid_type_error: t("profile.error_required") })
+      .min(1, t("profile.error_hours_min"))
+      .max(40, t("profile.error_hours_max")),
   });
 
   type FormData = z.infer<typeof schema>;
@@ -174,12 +242,12 @@ export default function ProfilePage() {
     update(cleaned, { onSuccess: () => reset(data) });
   }
 
-  if (isLoading) return <div className="p-8 text-muted-foreground">{t("profile.loading")}</div>;
-  if (isError) return <div className="p-8 text-destructive">{t("profile.error_load")}</div>;
+  if (isLoading) return <div className="text-muted-foreground p-8">{t("profile.loading")}</div>;
+  if (isError) return <div className="text-destructive p-8">{t("profile.error_load")}</div>;
 
   return (
-    <div className="min-h-screen bg-muted/40">
-      <header className="border-b bg-background px-6 py-4">
+    <div className="bg-muted/40 min-h-screen">
+      <header className="bg-background border-b px-6 py-4">
         <div className="mx-auto flex max-w-2xl items-center justify-between">
           <span className="text-lg font-semibold">Training Platform</span>
           <div className="flex items-center gap-2">
@@ -187,7 +255,10 @@ export default function ProfilePage() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => { clearTokens(); navigate("/login"); }}
+              onClick={() => {
+                clearTokens();
+                navigate("/login");
+              }}
             >
               {t("profile.logout")}
             </Button>
@@ -221,7 +292,9 @@ export default function ProfilePage() {
                 <Label>{t("profile.gender")}</Label>
                 <Select
                   value={watch("gender") ?? ""}
-                  onValueChange={(v) => setValue("gender", v as FormData["gender"], { shouldDirty: true })}
+                  onValueChange={(v) =>
+                    setValue("gender", v as FormData["gender"], { shouldDirty: true })
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="—">
@@ -261,12 +334,16 @@ export default function ProfilePage() {
                       step="0.1"
                       className="pr-10"
                       defaultValue={toDisplay(watch("weight_kg") as number | "")}
-                      onChange={(e) => setValue("weight_kg", e.target.value as unknown as number, { shouldDirty: true })}
+                      onChange={(e) =>
+                        setValue("weight_kg", e.target.value as unknown as number, {
+                          shouldDirty: true,
+                        })
+                      }
                     />
                   ) : (
                     <Input type="number" step="0.1" className="pr-10" {...register("weight_kg")} />
                   )}
-                  <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
+                  <span className="text-muted-foreground pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-sm">
                     {weightImperial ? t("profile.weight_unit_imperial") : t("profile.weight_unit")}
                   </span>
                 </div>
@@ -280,7 +357,12 @@ export default function ProfilePage() {
                     left={t("profile.height_unit")}
                     right={t("profile.height_unit_imperial")}
                     active={heightImperial}
-                    onToggle={(imp) => { setHeightImperial(imp); setFtIn(cmToFtIn(watch("height_cm") as number | "") as { ft: string; in: string }); }}
+                    onToggle={(imp) => {
+                      setHeightImperial(imp);
+                      setFtIn(
+                        cmToFtIn(watch("height_cm") as number | "") as { ft: string; in: string },
+                      );
+                    }}
                   />
                 </div>
                 {heightImperial ? (
@@ -292,10 +374,14 @@ export default function ProfilePage() {
                         value={ftIn.ft}
                         onChange={(e) => {
                           setFtIn((p) => ({ ...p, ft: e.target.value }));
-                          setValue("height_cm", ftInToCm(e.target.value, ftIn.in) as number, { shouldDirty: true });
+                          setValue("height_cm", ftInToCm(e.target.value, ftIn.in) as number, {
+                            shouldDirty: true,
+                          });
                         }}
                       />
-                      <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">{t("profile.height_unit_imperial")}</span>
+                      <span className="text-muted-foreground pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-sm">
+                        {t("profile.height_unit_imperial")}
+                      </span>
                     </div>
                     <div className="relative flex-1">
                       <Input
@@ -304,16 +390,22 @@ export default function ProfilePage() {
                         value={ftIn.in}
                         onChange={(e) => {
                           setFtIn((p) => ({ ...p, in: e.target.value }));
-                          setValue("height_cm", ftInToCm(ftIn.ft, e.target.value) as number, { shouldDirty: true });
+                          setValue("height_cm", ftInToCm(ftIn.ft, e.target.value) as number, {
+                            shouldDirty: true,
+                          });
                         }}
                       />
-                      <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">{t("profile.height_in")}</span>
+                      <span className="text-muted-foreground pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-sm">
+                        {t("profile.height_in")}
+                      </span>
                     </div>
                   </div>
                 ) : (
                   <div className="relative">
                     <Input type="number" className="pr-10" {...register("height_cm")} />
-                    <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">{t("profile.height_unit")}</span>
+                    <span className="text-muted-foreground pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-sm">
+                      {t("profile.height_unit")}
+                    </span>
                   </div>
                 )}
 
@@ -342,7 +434,10 @@ export default function ProfilePage() {
             <CardContent className="grid grid-cols-2 gap-4">
               <div className="space-y-1">
                 <div className="flex items-center gap-1.5">
-                  <Label>{t("profile.training_level")}<Req /></Label>
+                  <Label>
+                    {t("profile.training_level")}
+                    <Req />
+                  </Label>
                   <InfoTooltip
                     content={
                       <ul className="space-y-1.5">
@@ -359,11 +454,18 @@ export default function ProfilePage() {
                 </div>
                 <Select
                   value={watch("training_level") ?? ""}
-                  onValueChange={(v) => setValue("training_level", v as FormData["training_level"], { shouldDirty: true, shouldValidate: true })}
+                  onValueChange={(v) =>
+                    setValue("training_level", v as FormData["training_level"], {
+                      shouldDirty: true,
+                      shouldValidate: true,
+                    })
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="—">
-                      {watch("training_level") ? t(`profile.level_${watch("training_level")}`) : "—"}
+                      {watch("training_level")
+                        ? t(`profile.level_${watch("training_level")}`)
+                        : "—"}
                     </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
@@ -378,7 +480,10 @@ export default function ProfilePage() {
 
               <div className="space-y-1">
                 <div className="flex items-center gap-1.5">
-                  <Label>{t("profile.weekly_hours")}<Req /></Label>
+                  <Label>
+                    {t("profile.weekly_hours")}
+                    <Req />
+                  </Label>
                   <InfoTooltip content={t("profile.hint_weekly_hours")} />
                 </div>
                 <Input type="number" step="0.5" {...register("weekly_hours_available")} />
@@ -441,10 +546,17 @@ export default function ProfilePage() {
             </CardContent>
           </Card>
 
-          <p className="text-xs text-muted-foreground"><Req /> — {t("profile.error_required").toLowerCase()}</p>
+          <p className="text-muted-foreground text-xs">
+            <Req /> — {t("profile.error_required").toLowerCase()}
+          </p>
 
           <div className="flex items-center gap-4">
-            <Button type="submit" disabled={isPending} size="lg" className="px-10 text-base font-semibold">
+            <Button
+              type="submit"
+              disabled={isPending}
+              size="lg"
+              className="px-10 text-base font-semibold"
+            >
               {isPending ? t("profile.saving") : t("profile.save")}
             </Button>
             {isSuccess && !isDirty && (

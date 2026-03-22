@@ -19,7 +19,7 @@ async def get_user_by_id(db: AsyncSession, user_id: uuid.UUID) -> User | None:
 
 async def create_user(db: AsyncSession, email: str, password_hash: str) -> User:
     user = User(email=email, password_hash=password_hash)
-    profile = Profile(user=user)
+    profile = Profile(user=user, timezone="UTC")
     db.add(user)
     db.add(profile)
     await db.commit()
