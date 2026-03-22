@@ -9,15 +9,21 @@
 **Цель**: Рабочее окружение, структура репозитория, базовая конфигурация
 
 ### Задачи:
-- [ ] Инициализация монорепозитория (или два репо: backend / frontend)
-- [ ] Docker Compose: PostgreSQL + Redis + Backend + Frontend
-- [ ] Настройка линтеров и форматтеров (ruff, black, eslint, prettier)
-- [ ] CI базовый (GitHub Actions: lint + tests)
-- [ ] Структура папок backend и frontend
-- [ ] `.env` схема и управление конфигурацией
+- [x] Инициализация монорепозитория (или два репо: backend / frontend)
+- [x] Docker Compose: PostgreSQL + Redis + Backend + Frontend
+- [x] Настройка линтеров и форматтеров (ruff, eslint, prettier)
+- [x] CI базовый (GitHub Actions: lint + tests)
+- [x] Структура папок backend и frontend
+- [x] `.env` схема и управление конфигурацией
+- [x] CD — автодеплой на VPS при push в main (appleboy/ssh-action)
+- [x] Pre-commit хуки (ruff + prettier — проверка до коммита)
+- [x] `.dockerignore` для backend и frontend
+- [x] Безопасность: порты db/redis/backend закрыты снаружи (127.0.0.1)
+- [x] `restart: unless-stopped` — автоперезапуск контейнеров после ребута VPS
+- [x] Кэширование зависимостей в CI (pip, uv, npm)
 
 ### Результат:
-> `docker compose up` поднимает все сервисы, backend отдаёт `/health`
+> `docker compose up` поднимает все сервисы, backend отдаёт `/health` с проверкой DB и Redis
 
 ---
 
@@ -26,17 +32,26 @@
 **Цель**: Пользователь может зарегистрироваться, войти и заполнить профиль
 
 ### Backend:
-- [ ] Модели: `User`, `Profile`
-- [ ] Эндпоинты: `POST /auth/register`, `POST /auth/login`, `POST /auth/refresh`
-- [ ] JWT access + refresh токены
-- [ ] `GET/PUT /profile` — просмотр и редактирование профиля
-- [ ] Middleware аутентификации (dependency injection)
+- [x] Модели: `User`, `Profile`
+- [x] Эндпоинты: `POST /auth/register`, `POST /auth/login`, `POST /auth/refresh`
+- [x] JWT access + refresh токены
+- [x] `GET/PUT /profile` — просмотр и редактирование профиля
+- [x] Middleware аутентификации (dependency injection)
+- [x] Слоистая архитектура: Router → Service → Repository
+- [x] Кастомные исключения (`AppError` + глобальный хендлер)
+- [x] Тесты (48 тестов, PostgreSQL в CI)
+- [ ] TODO: кэш пользователя в Redis в `get_current_user` (ключ: `user:{id}`, TTL = access token lifetime)
 
 ### Frontend:
-- [ ] Страница регистрации / входа
-- [ ] Хранение токенов (httpOnly cookie или localStorage с refresh логикой)
-- [ ] Страница профиля (форма редактирования)
-- [ ] Защищённые роуты
+- [x] Страница регистрации / входа
+- [x] Хранение токенов (localStorage + автообновление refresh)
+- [x] Страница профиля (форма редактирования с валидацией)
+- [x] Защищённые роуты (`ProtectedRoute`)
+- [x] Переключение единиц (кг/фунты, см/фут)
+- [x] Поддержка i18n (RU/EN)
+- [x] Мобильная адаптация профиля (responsive grid)
+- [x] ErrorBoundary
+- [x] `useProfileForm` хук (логика отделена от JSX)
 
 ### Результат:
 > Пользователь регистрируется, заходит, видит и редактирует свой профиль
@@ -157,8 +172,9 @@
 - [ ] Страница гонок / соревновательного календаря
 - [ ] Уведомления по email (план готов, синхронизация упала)
 - [ ] Rate limiting на API
-- [ ] Мониторинг (Sentry для ошибок, UptimeRobot)
-- [ ] Деплой на сервер (Railway / VPS с Docker)
+- [x] Мониторинг — `/health` эндпоинт (DB + Redis статус), healthcheck в Docker
+- [ ] Мониторинг — Sentry для ошибок, UptimeRobot
+- [x] Деплой на VPS с Docker (CI/CD через GitHub Actions)
 - [ ] Базовая документация (README, API docs через FastAPI/Swagger)
 
 ### Результат:
@@ -215,7 +231,7 @@ Request: Составь план на следующие 2 недели...
 ## Примерный timeline
 
 ```
-Неделя 1-2:   Этап 0 + Этап 1  (окружение + auth)
+Неделя 1-2:   Этап 0 + Этап 1  (окружение + auth) ✅
 Неделя 3-4:   Этап 2           (ручной ввод)
 Неделя 5-6:   Этап 3           (аналитика)
 Неделя 7-9:   Этап 4           (интеграции)
