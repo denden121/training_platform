@@ -1,11 +1,11 @@
 """
 Tests for POST /auth/register, /auth/login, /auth/refresh
 """
+
 import pytest
 from httpx import AsyncClient
 
 from tests.conftest import register
-
 
 # ---------------------------------------------------------------------------
 # Register
@@ -89,6 +89,7 @@ async def test_login_case_sensitive_password(client: AsyncClient):
 @pytest.mark.asyncio
 async def test_login_updates_last_login_at(client: AsyncClient, db):
     from sqlalchemy import select
+
     from app.models.user import User
 
     await register(client, "ts@example.com")
@@ -138,6 +139,7 @@ async def test_refresh_with_access_token_rejected(client: AsyncClient, tokens: d
 async def test_access_token_not_accepted_as_refresh(client: AsyncClient, tokens: dict):
     """Sanity: access token type check."""
     from jose import jwt
+
     from app.core.config import settings
 
     payload = jwt.decode(tokens["access_token"], settings.SECRET_KEY, algorithms=["HS256"])

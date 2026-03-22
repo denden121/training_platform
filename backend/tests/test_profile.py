@@ -1,11 +1,11 @@
 """
 Tests for GET /profile, PUT /profile
 """
+
 import pytest
 from httpx import AsyncClient
 
 from tests.conftest import register
-
 
 # ---------------------------------------------------------------------------
 # GET /profile
@@ -88,8 +88,8 @@ async def test_update_profile_partial_doesnt_wipe_other_fields(client: AsyncClie
     r = await client.put("/profile", json={"last_name": "Petrov"}, headers=auth_headers)
     assert r.status_code == 200
     data = r.json()
-    assert data["first_name"] == "Ivan"   # still there
-    assert data["ftp_watts"] == 300        # still there
+    assert data["first_name"] == "Ivan"  # still there
+    assert data["ftp_watts"] == 300  # still there
     assert data["last_name"] == "Petrov"
 
 

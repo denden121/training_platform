@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <rect width="32" height="32" rx="8" fill="#18181b"/>
+  <!-- Running figure -->
+  <!-- Head -->
+  <circle cx="20" cy="7" r="2.5" fill="white"/>
+  <!-- Body / torso -->
+  <path d="M18 10 L14 17 L17 17 L15 25" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Front arm -->
+  <path d="M17 13 L22 16" stroke="white" stroke-width="2" stroke-linecap="round" fill="none"/>
+  <!-- Back arm -->
+  <path d="M16 12 L12 14" stroke="white" stroke-width="2" stroke-linecap="round" fill="none"/>
+  <!-- Front leg -->
+  <path d="M14 17 L11 22 L13 22" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Back leg -->
+  <path d="M15 25 L18 25" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+</svg>
