@@ -16,10 +16,6 @@ echo "==> Building and starting containers..."
 docker compose up --build -d
 
 echo "==> Waiting for services to be healthy..."
-sleep 5
+docker compose wait db redis 2>/dev/null || true
 
 echo "==> Done!"
-echo ""
-echo "    Backend:  http://$(curl -s ifconfig.me):8000/health"
-echo "    Frontend: http://$(curl -s ifconfig.me)"
-echo "    API docs: http://$(curl -s ifconfig.me):8000/docs"
