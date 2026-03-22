@@ -1,3 +1,5 @@
+import os
+
 import pytest
 from httpx import ASGITransport, AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
@@ -6,16 +8,17 @@ from app.db.base import Base
 from app.db.session import get_db
 from app.main import app
 
-TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
+TEST_DATABASE_URL = os.environ["DATABASE_URL"]
 
 
-# Fresh in-memory DB per test — isolates data without needing rollback tricks
 @pytest.fixture
 async def engine():
     e = create_async_engine(TEST_DATABASE_URL, echo=False)
     async with e.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
     yield e
+    async with e.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
     await e.dispose()
 
 
