@@ -13,7 +13,6 @@ const GOLD = "#C9A847";
 const BG = "#161616";
 const SURFACE = "#1e1e1e";
 const BORDER = "#2e2e2e";
-const BORDER_HOVER = "#444";
 const TEXT_MUTED = "#888";
 const TEXT_DIM = "#444";
 
