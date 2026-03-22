@@ -1,5 +1,5 @@
 import { Popover } from "@base-ui/react";
-import { format, parse, isValid } from "date-fns";
+import { format, parse, isValid, type Locale } from "date-fns";
 import { enUS, ru } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
 import { DayPicker } from "react-day-picker";
