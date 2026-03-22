@@ -190,7 +190,9 @@ export default function ProfilePage() {
                           setFtIn((p) => ({ ...p, ft: e.target.value }));
                           setValue(
                             "height_cm",
-                            Math.round((Number(e.target.value) * 12 + Number(ftIn.in)) / 0.393701) as number,
+                            Math.round(
+                              (Number(e.target.value) * 12 + Number(ftIn.in)) / 0.393701,
+                            ) as number,
                             { shouldDirty: true },
                           );
                         }}
@@ -208,7 +210,9 @@ export default function ProfilePage() {
                           setFtIn((p) => ({ ...p, in: e.target.value }));
                           setValue(
                             "height_cm",
-                            Math.round((Number(ftIn.ft) * 12 + Number(e.target.value)) / 0.393701) as number,
+                            Math.round(
+                              (Number(ftIn.ft) * 12 + Number(e.target.value)) / 0.393701,
+                            ) as number,
                             { shouldDirty: true },
                           );
                         }}
