@@ -21,6 +21,7 @@ dist/
 
 # Docker
 postgres_data/
+docker-compose.override.yml
 
 # IDE
 .idea/

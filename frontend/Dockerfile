@@ -1,3 +1,10 @@
+FROM node:22-alpine AS dev
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci
+EXPOSE 80
+CMD ["npm", "run", "dev", "--", "--host", "--port", "80"]
+
 FROM node:22-alpine AS builder
 
 WORKDIR /app
