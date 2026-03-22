@@ -65,7 +65,7 @@ function UnitToggle({
 function InfoTooltip({ content }: { content: React.ReactNode }) {
   return (
     <Tooltip.Provider>
-      <Tooltip.Root delay={300}>
+      <Tooltip.Root>
         <Tooltip.Trigger className="border-muted-foreground/40 text-muted-foreground flex h-4 w-4 cursor-pointer items-center justify-center rounded-full border text-[10px] leading-none">
           ?
         </Tooltip.Trigger>
@@ -113,7 +113,7 @@ export default function ProfilePage() {
 
   function toDisplay(kg: number | "") {
     if (kg === "") return "";
-    return imperial ? Math.round(Number(kg) * KG_TO_LBS * 10) / 10 : kg;
+    return weightImperial ? Math.round(Number(kg) * KG_TO_LBS * 10) / 10 : kg;
   }
   function fromLbs(lbs: string | number) {
     if (lbs === "") return "";
@@ -195,7 +195,9 @@ export default function ProfilePage() {
     weekly_hours_available: z.coerce
       .number({ invalid_type_error: t("profile.error_required") })
       .min(1, t("profile.error_hours_min"))
-      .max(40, t("profile.error_hours_max")),
+      .max(40, t("profile.error_hours_max"))
+      .optional()
+      .or(z.literal("")),
   });
 
   type FormData = z.infer<typeof schema>;
@@ -234,7 +236,9 @@ export default function ProfilePage() {
 
   function onSubmit(data: FormData) {
     const converted = { ...data };
-    if (weightImperial) converted.weight_kg = data.weight_kg !== "" ? fromLbs(data.weight_kg) : "";
+    if (weightImperial)
+      converted.weight_kg =
+        data.weight_kg !== "" && data.weight_kg !== undefined ? fromLbs(data.weight_kg) : "";
     if (heightImperial) converted.height_cm = ftInToCm(ftIn.ft, ftIn.in) as number | "";
     const cleaned = Object.fromEntries(
       Object.entries(converted).map(([k, v]) => [k, v === "" ? null : v]),
