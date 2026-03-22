@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
-import type { Profile } from "@/types/profile";
+import type { Profile, ProfileUpdate } from "@/types/profile";
 
 export function useProfile() {
   return useQuery<Profile>({
@@ -15,7 +15,7 @@ export function useProfile() {
 export function useUpdateProfile() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (updates: Partial<Profile>) => {
+    mutationFn: async (updates: Partial<ProfileUpdate>) => {
       const { data } = await api.put<Profile>("/profile", updates);
       return data;
     },

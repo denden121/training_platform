@@ -20,3 +20,5 @@ export interface Profile {
   training_level: TrainingLevel | null;
   weekly_hours_available: number | null;
 }
+
+export type ProfileUpdate = Omit<Profile, "id" | "user_id">;
