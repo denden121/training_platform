@@ -15,7 +15,4 @@ docker compose down --remove-orphans
 echo "==> Building and starting containers..."
 docker compose up --build -d
 
-echo "==> Waiting for services to be healthy..."
-docker compose wait db redis 2>/dev/null || true
-
 echo "==> Done!"
