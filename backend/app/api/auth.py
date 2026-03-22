@@ -40,9 +40,7 @@ async def register(body: RegisterRequest, db: AsyncSession = Depends(get_db)) ->
 async def login(body: LoginRequest, db: AsyncSession = Depends(get_db)) -> TokenResponse:
     user = await get_user_by_email(db, body.email)
     if not user or not verify_password(body.password, user.password_hash):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid email or password"
-        )
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid email or password")
     if not user.is_active:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Account disabled")
 
@@ -59,8 +57,8 @@ async def login(body: LoginRequest, db: AsyncSession = Depends(get_db)) -> Token
 async def refresh(body: RefreshRequest, db: AsyncSession = Depends(get_db)) -> TokenResponse:
     try:
         user_id = decode_token(body.refresh_token, token_type="refresh")
-    except JWTError:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token")
+    except JWTError as exc:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token") from exc
 
     from uuid import UUID
 

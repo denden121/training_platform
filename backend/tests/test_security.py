@@ -1,6 +1,7 @@
 """
 Unit tests for app.core.security — no HTTP, no DB needed.
 """
+
 import time
 
 import pytest
@@ -15,7 +16,6 @@ from app.core.security import (
     hash_password,
     verify_password,
 )
-
 
 # ---------------------------------------------------------------------------
 # Password hashing

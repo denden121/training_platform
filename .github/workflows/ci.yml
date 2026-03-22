@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main, master]
+    branches: [main, master, feature/first_stage]
   pull_request:
-    branches: [main, master]
+    branches: [main, master, feature/first_stage]
 
 jobs:
   backend-lint:
@@ -58,3 +58,20 @@ jobs:
       - run: npm run lint
       - run: npm run format:check
       - run: npx tsc --noEmit
+
+  deploy:
+    name: Deploy to VPS
+    needs: [backend-lint, backend-test, frontend-lint]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            cd /opt/training_platform
+            git pull origin ${{ github.ref_name }}
+            bash deploy.sh
