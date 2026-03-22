@@ -16,7 +16,6 @@ htmlcov/
 node_modules/
 dist/
 .eslintcache
-package-lock.json
 
 # Docker
 postgres_data/
