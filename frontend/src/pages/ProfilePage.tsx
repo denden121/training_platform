@@ -54,7 +54,7 @@ export default function ProfilePage() {
 
   return (
     <div className="bg-muted/40 min-h-screen">
-      <header className="bg-background border-b px-6 py-4">
+      <header className="bg-background border-b px-4 py-4 sm:px-6">
         <div className="mx-auto flex max-w-2xl items-center justify-between">
           <span className="text-lg font-semibold">Training Platform</span>
           <div className="flex items-center gap-2">
@@ -73,7 +73,7 @@ export default function ProfilePage() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-2xl px-6 py-8">
+      <main className="mx-auto max-w-2xl px-4 py-6 sm:px-6 sm:py-8">
         <h2 className="mb-6 text-xl font-semibold">{t("profile.title")}</h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -82,7 +82,7 @@ export default function ProfilePage() {
             <CardHeader>
               <CardTitle className="text-base">{t("profile.section_personal")}</CardTitle>
             </CardHeader>
-            <CardContent className="grid grid-cols-2 gap-4">
+            <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="space-y-1">
                 <Label>{t("profile.first_name")}</Label>
                 <Input {...register("first_name")} />
@@ -233,7 +233,7 @@ export default function ProfilePage() {
                 <FieldError message={errors.height_cm?.message} />
               </div>
 
-              <div className="col-span-2 space-y-1">
+              <div className="col-span-1 space-y-1 sm:col-span-2">
                 <Label>{t("profile.timezone")}</Label>
                 <TimezoneSelect
                   value={watch("timezone") ?? ""}
@@ -252,7 +252,7 @@ export default function ProfilePage() {
             <CardHeader>
               <CardTitle className="text-base">{t("profile.section_fitness")}</CardTitle>
             </CardHeader>
-            <CardContent className="grid grid-cols-2 gap-4">
+            <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="space-y-1">
                 <div className="flex items-center gap-1.5">
                   <Label>
@@ -376,7 +376,7 @@ export default function ProfilePage() {
               type="submit"
               disabled={isPending}
               size="lg"
-              className="px-10 text-base font-semibold"
+              className="w-full text-base font-semibold sm:w-auto sm:px-10"
             >
               {isPending ? t("profile.saving") : t("profile.save")}
             </Button>
