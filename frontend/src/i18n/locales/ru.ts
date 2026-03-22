@@ -14,6 +14,16 @@ export default {
     error_generic: "Что-то пошло не так",
     error_email_taken: "Email уже зарегистрирован",
     error_invalid_credentials: "Неверный email или пароль",
+    subtitle_login: "Войдите в свой аккаунт АТЛЕТ",
+    subtitle_register: "Создайте аккаунт АТЛЕТ",
+    forgot_password: "Забыли пароль?",
+    or: "или",
+    continue_google: "Продолжить через Google",
+    terms:
+      "Регистрируясь, вы соглашаетесь с условиями использования и политикой конфиденциальности",
+    feature_1: "Дневник тренировок и аналитика",
+    feature_2: "Календарь стартов и результаты гонок",
+    feature_3: "Личные рекорды и достижения",
   },
   profile: {
     title: "Профиль атлета",
