@@ -37,6 +37,9 @@ async def get_current_user(
         user_id = decode_token(credentials.credentials, token_type="access")
     except JWTError as exc:
         raise InvalidToken() from exc
+    # TODO: check Redis cache before hitting DB (key: user:{user_id}, TTL = ACCESS_TOKEN_EXPIRE_MINUTES)
+    # On cache hit — build detached User+Profile from JSON, skip DB query
+    # On cache miss — load from DB, store in Redis
     user = await repo.get_by_id(uuid.UUID(user_id))
     if user is None or not user.is_active:
         raise UserNotFound()
