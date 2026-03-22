@@ -72,6 +72,6 @@ jobs:
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           script: |
-            cd /opt/training_platform
+            cd /root/training_platform
             git pull origin ${{ github.ref_name }}
             bash deploy.sh

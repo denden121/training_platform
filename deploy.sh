@@ -9,9 +9,6 @@ if [ ! -f .env ]; then
   exit 1
 fi
 
-echo "==> Removing platform-specific lock files..."
-rm -f frontend/package-lock.json
-
 echo "==> Stopping old containers..."
 docker compose down --remove-orphans
 
